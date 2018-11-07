@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCharacter : MonoBehaviour
-{
+public class PlayerCharacter : MonoBehaviour {
+
     [SerializeField]
     private float accelerationForce = 5;
 
@@ -25,6 +25,12 @@ public class PlayerCharacter : MonoBehaviour
     private float horizontalInput;
     private bool isOnGround;
     private Collider2D[] groundHitDetectionResults = new Collider2D[16];
+
+    // Use this for initialization
+    void Start ()
+    {
+	    	
+	}
 	
 	// Update is called once per frame
 	void Update ()
@@ -36,7 +42,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void UpdateIsOnGround()
     {
-        groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetectionResults) > 0;
+        //groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetectionResults) > 0;
         Debug.Log("isOnGround?: " + isOnGround);
     }
 
