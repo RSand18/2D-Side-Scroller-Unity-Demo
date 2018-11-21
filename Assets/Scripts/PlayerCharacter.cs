@@ -31,6 +31,7 @@ public class PlayerCharacter : MonoBehaviour {
     private float horizontalInput;
     private bool isOnGround;
     private Collider2D[] groundHitDetectionResults = new Collider2D[16];
+    private Checkpoint currentCheckpoint;
 
     // Use this for initialization
     void Start ()
@@ -44,6 +45,12 @@ public class PlayerCharacter : MonoBehaviour {
         UpdateIsOnGround();
         UpdateHorizontalInput();
         HandleJumpInput();
+    }
+
+    private void FixedUpdate()
+    {
+        UpdatePhysicsMaterial();
+        Move();
     }
 
     private void UpdatePhysicsMaterial()
@@ -77,17 +84,22 @@ public class PlayerCharacter : MonoBehaviour {
         }
     }
 
-    private void FixedUpdate()
-    {
-        UpdatePhysicsMaterial();
-        Move();
-    }
-
     private void Move()
     {
         rb2d.AddForce(Vector2.right * horizontalInput * accelerationForce);
         Vector2 clampedVelocity = rb2d.velocity;
         clampedVelocity.x = Mathf.Clamp(rb2d.velocity.x, -maxSpeed, maxSpeed);
         rb2d.velocity = clampedVelocity;
+    }
+
+    private void Respawn()
+    {
+        rb2d.velocity = Vector2.zero;
+        transform.position = currentCheckpoint.transform.position;
+    }
+
+    public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
+    {
+        currentCheckpoint = newCurrentCheckpoint;
     }
 }
