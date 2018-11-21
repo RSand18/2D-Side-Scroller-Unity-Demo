@@ -42,7 +42,7 @@ public class PlayerCharacter : MonoBehaviour {
 
     private void UpdateIsOnGround()
     {
-        //groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetectionResults) > 0;
+        isOnGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetectionResults) > 0;
         Debug.Log("isOnGround?: " + isOnGround);
     }
 
