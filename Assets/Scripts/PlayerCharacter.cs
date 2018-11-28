@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerCharacter : MonoBehaviour {
 
@@ -32,12 +33,6 @@ public class PlayerCharacter : MonoBehaviour {
     private bool isOnGround;
     private Collider2D[] groundHitDetectionResults = new Collider2D[16];
     private Checkpoint currentCheckpoint;
-
-    // Use this for initialization
-    void Start ()
-    {
-	    	
-	}
 	
 	// Update is called once per frame
 	void Update ()
@@ -68,7 +63,7 @@ public class PlayerCharacter : MonoBehaviour {
     private void UpdateIsOnGround()
     {
         isOnGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetectionResults) > 0;
-        Debug.Log("isOnGround?: " + isOnGround);
+        //Debug.Log("isOnGround?: " + isOnGround);
     }
 
     private void UpdateHorizontalInput()
@@ -78,7 +73,7 @@ public class PlayerCharacter : MonoBehaviour {
 
     private void HandleJumpInput()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && isOnGround)
         {
             rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
@@ -92,10 +87,17 @@ public class PlayerCharacter : MonoBehaviour {
         rb2d.velocity = clampedVelocity;
     }
 
-    private void Respawn()
+    public void Respawn()
     {
-        rb2d.velocity = Vector2.zero;
-        transform.position = currentCheckpoint.transform.position;
+        if(currentCheckpoint == null)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        else
+        {
+            rb2d.velocity = Vector2.zero;
+            transform.position = currentCheckpoint.transform.position;
+        }
     }
 
     public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
